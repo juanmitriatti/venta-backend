@@ -1,0 +1,25 @@
+version: '3'
+
+volumes:
+  mysql_data:
+
+services:
+  db:
+    image: mysql
+    restart: always
+    environment:
+      - MYSQL_DATABASE=crudnestjs
+      - MYSQL_USER=USUARIO
+      - MYSQL_PASSWORD=CONTRASENA
+      - MYSQL_ROOT_PASSWORD=CONTRASENA
+    volumes:
+      - mysql_data:/var/lib/mysql
+    ports:
+      - "3900:3306"
+  api:
+    restart: always
+    build: .
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./:/srv/app

@@ -1,0 +1,17 @@
+{
+  "type": "mysql",
+  "host": "localhost",
+  "username": "USUARIO",
+  "password": "CONTRASENA",
+  "database": "crudnestjs",
+  "port": 3900,
+  "synchronize": true,
+  "entities": ["src/modules/**/**/*.entity{.ts,.js}"],
+  "migrations": ["src/database/migrations/*{.ts,.js}"],
+  "seeds": ["./src/database/seeds/*{.ts,.js}"],
+  "factories": ["./src/database/factories/*{.ts,.js}"],
+  "cli": {
+    "entitiesDir": "src/entity",
+    "migrationsDir": "src/database/migrations"
+  }
+}
