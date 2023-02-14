@@ -10,8 +10,9 @@ export class FacturaRepository extends Repository<FacturaEntity> {
   ): Promise<FacturaEntity> {
     const factura = this.create(createFacturaDto);
     try {
-      Logger.log(`Factura con id "${factura.id}" has been created.`);
       await this.save(factura);
+      Logger.log(`Factura con id "${factura.id}" has been created.`);
+
       return factura;
     } catch (error) {
       Logger.error(`Falló al crear factura `, error);

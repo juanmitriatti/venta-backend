@@ -12,11 +12,26 @@ export class FacturaService {
     @InjectRepository(FacturaRepository)
     private _facturaRepository: FacturaRepository,
     private readonly logger: Logger,
-  ) {}
+  ) { }
 
   async findAll(): Promise<FacturaEntity[]> {
     return await this._facturaRepository.find();
   }
+ // async findAllFacturasLineas(): Promise<FacturaEntity[]> {
+    /*const userRepository = dataSource.getRepository(User)
+    const users = await userRepository.find({
+        relations: {
+            photos: true,
+        },
+    })*/
+   /* const users = await this._facturaRepository.find({
+      relations: {
+        linea: true,
+      },
+    })*/
+   // return users;
+    // return await this._facturaRepository.find();
+  //}
 
   async createFactura(
     createFacturaDto: createFacturaDto,
@@ -37,7 +52,7 @@ export class FacturaService {
 
     const updatedFactura = Object.assign(factura, updateFacturaDto);
     // Set JDEEventID just in case the one coming from the body is different.
-   // updatedFactura.id = id;
+    // updatedFactura.id = id;
     //updatedFactura.updatedAt = Math.floor(Date.now() / 1000);
 
     try {

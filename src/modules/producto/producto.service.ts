@@ -12,7 +12,7 @@ export class ProductoService {
     @InjectRepository(ProductoRepository)
     private _productoRepository: ProductoRepository,
     private readonly logger: Logger,
-  ) {}
+  ) { }
 
   async findAll(): Promise<ProductoEntity[]> {
     return await this._productoRepository.find({ where: { Status: 'ACTIVE' } });
@@ -38,9 +38,6 @@ export class ProductoService {
     });
 
     const updatedProducto = Object.assign(producto, updateProductoDto);
-    // Set JDEEventID just in case the one coming from the body is different.
-   // updatedProducto.id = id;
-    //updatedProducto.updatedAt = Math.floor(Date.now() / 1000);
 
     try {
       this.logger.log(`Producto with evento "${id}" has been updated.`);

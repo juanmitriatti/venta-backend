@@ -22,8 +22,13 @@ export class LineaController {
   }
 
   @Get()
-  findAll(): Promise<LineaEntity[]> {
+  findAll(): Promise<any[]> {
     return this.lineaService.findAll();
+  }
+
+  @Get('/factura/hoy')
+  findAllFacturas(): Promise<LineaEntity[] | any> {
+    return this.lineaService.facturadoHoy();
   }
 
   @Get(':id')

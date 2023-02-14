@@ -17,9 +17,10 @@ export class LineaEntity extends BaseEntity {
   @Column({ type: 'float' })
   precio: number;
 
+  @Column({ type: 'int' })
+  cantidad: number;
+
   @ManyToOne(type => FacturaEntity, factura => factura.lineas)
   factura: FacturaEntity;
 
- /* @Column()
-  lineas: string;*/
 }

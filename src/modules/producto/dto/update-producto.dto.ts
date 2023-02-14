@@ -17,7 +17,8 @@ export class UpdateProductoDto extends PartialType(createProductoDto) {
     @IsString()
     @IsOptional()
     descripcion: string;
-
+    
+    @IsNotEmpty()
     @IsOptional()
     precio: number;
 

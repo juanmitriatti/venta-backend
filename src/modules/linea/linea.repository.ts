@@ -9,22 +9,35 @@ export class LineaRepository extends Repository<LineaEntity> {
   async createLinea(
     createLineaDto: createLineaDto,
     facturaEntidad: FacturaEntity,
-  ): Promise<LineaEntity> {
+  ): Promise<LineaEntity | LineaEntity[] | any> {
+
     createLineaDto.factura = facturaEntidad;
+    let linea = [];
+    //console.log("Repository : llega este DTO", createLineaDto)
+    if (createLineaDto.productoLinea) {
+      //console.log("Repository : createLineaDto.productoLinea", createLineaDto.productoLinea)
+      //console.log(typeof createLineaDto.productoLinea);
 
-    const linea = this.create(createLineaDto);
+      createLineaDto.productoLinea.forEach(async (arrayItem) => {
 
-    //const linea = this.create(createLineaDto);
+        const linea = this.create({
+          precio: arrayItem.precio,
+          factura: facturaEntidad,
+          cantidad: arrayItem.cantidad,
+        });
 
-    try {
-      Logger.log(`Linea con id "${linea.id}" has been created.`);
-      await this.save(linea);
+        try {
+          await this.save(linea);
+          Logger.log(`Linea  has been created.`);
+          return linea;
+        } catch (error) {
+          console.log(error);
+          Logger.error(`Fallo al crear linea `);
+
+          throw new InternalServerErrorException();
+        }
+      });
       return linea;
-    } catch (error) {
-      console.log(error);
-      Logger.error(`Fallo al crear linea `);
-
-      throw new InternalServerErrorException();
     }
   }
 }

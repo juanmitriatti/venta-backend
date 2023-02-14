@@ -12,6 +12,8 @@ services:
       - MYSQL_USER=USUARIO
       - MYSQL_PASSWORD=CONTRASENA
       - MYSQL_ROOT_PASSWORD=CONTRASENA
+    command:
+        --sql_mode=STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION
     volumes:
       - mysql_data:/var/lib/mysql
     ports:

@@ -16,8 +16,8 @@ export class FacturaEntity extends BaseEntity {
 
   @OneToMany(type => LineaEntity, linea => linea.factura) lineas: LineaEntity[];
 
-  @Column({ type: 'float' })
-  total: number;
+  /*@Column({ type: 'float' })
+  total: number;*/
 
   /*@Column({ type: 'timestamp' })
   fecha: number;*/
