@@ -31,6 +31,16 @@ export class LineaController {
     return this.lineaService.facturadoHoy();
   }
 
+  @Get('/factura/ultimossiete')
+  findFacturasUltimosSiete(): Promise<LineaEntity[] | any> {
+    return this.lineaService.facturadoUltimosSiete();
+  }
+
+  @Get('/factura/ultimossietedetalle')
+  findFacturasUltimosSieteDetalle(): Promise<LineaEntity[] | any> {
+    return this.lineaService.facturadoUltimosSieteDetalle();
+  }
+
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.lineaService.findOne(+id);

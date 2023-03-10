@@ -24,35 +24,48 @@ export class LineaService {
    .getMany()
   }
 
-  /* async findAllFacturas(): Promise<LineaEntity[]> {
-     //return await this._lineaRepository.find();
-     return await this._lineaRepository.find({
-        where: {
-         factura: {
-           id: "2",
-         },
-       },
-       relations: ['factura'],  
-     });
- 
-   }*/
-
+  
+/**
+ * Chequear porque la hora puede estar en +3
+ * @returns 
+ */
   async facturadoHoy(): Promise<LineaEntity[] | any> {
   
    return await this._lineaRepository.createQueryBuilder("linea")
     .leftJoinAndSelect("linea.factura", "factura")
     .select("SUM(linea.precio * linea.cantidad)", "sum")
-    //.addSelect("SUM(linea.precio)", "sum")
+    //.addSelect("@@global.time_zone", "fechaaa")
     .where("DATE_FORMAT(factura.fecha,'%Y/%m/%d') = DATE_FORMAT(curdate(),'%Y/%m/%d')")
     //.groupBy("linea.facturaId")
     .getRawMany();
-
-
- // Recaudado hoy
- //select SUM(l.preciolinea) as totalhoy from linea l inner join factura f on f.id=l.factura where date(f.fecha)=curdate()
   }
-
  
+  async facturadoUltimosSiete(): Promise<LineaEntity[] | any> {
+  
+    return await this._lineaRepository.createQueryBuilder("linea")
+     .leftJoinAndSelect("linea.factura", "factura")
+     .select("SUM(linea.precio * linea.cantidad)", "sum")
+     //.addSelect("factura.id", "id")
+     .where("DATE_FORMAT(factura.fecha,'%Y/%m/%d') > DATE_FORMAT(curdate(),'%Y/%m/%d') - INTERVAL 7 day")
+     //.groupBy("linea.facturaId")
+     //.orderBy('factura.id', 'ASC')
+     .getRawMany();
+     //order_date > now() - INTERVAL 7 day
+ 
+   }
+
+   async facturadoUltimosSieteDetalle(): Promise<LineaEntity[] | any> {
+  
+    return await this._lineaRepository.createQueryBuilder("linea")
+     .leftJoinAndSelect("linea.factura", "factura")
+     .select("SUM(linea.precio * linea.cantidad)", "sum")
+     .addSelect("DATE_FORMAT(factura.fecha,'%Y/%m/%d')", "dia")
+     .where("DATE_FORMAT(factura.fecha,'%Y/%m/%d') > DATE_FORMAT(curdate(),'%Y/%m/%d') - INTERVAL 7 day")
+     .groupBy("dia")
+     .orderBy('factura.id', 'DESC')
+     .getRawMany();
+   }
+   
 
   async createLinea(createLineaDto: createLineaDto): Promise<LineaEntity> {
     const facturaExiste = await this._facturaRepository.findOne(createLineaDto.factura);
