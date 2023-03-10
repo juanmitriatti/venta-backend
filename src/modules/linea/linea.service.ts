@@ -59,10 +59,11 @@ export class LineaService {
     return await this._lineaRepository.createQueryBuilder("linea")
      .leftJoinAndSelect("linea.factura", "factura")
      .select("SUM(linea.precio * linea.cantidad)", "sum")
-     .addSelect("DATE_FORMAT(factura.fecha,'%Y/%m/%d')", "dia")
+     .addSelect("DATE_FORMAT(factura.fecha,'%d-%m-%Y')", "dia")
      .where("DATE_FORMAT(factura.fecha,'%Y/%m/%d') > DATE_FORMAT(curdate(),'%Y/%m/%d') - INTERVAL 7 day")
      .groupBy("dia")
      .orderBy('factura.id', 'DESC')
+     .limit(7)
      .getRawMany();
    }
    
