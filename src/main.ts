@@ -7,8 +7,10 @@ const crPath = '/etc/letsencrypt/live/api.letrix.xyz/fullchain.pem';
 const pkPath = '/etc/letsencrypt/live/api.letrix.xyz/privkey.pem';
 const options: any = {};
 
-const environment = process.env.environment || 'development';
+const environment = process.env.ENVIRONMENT || 'production';
+
 if (environment != 'development') {
+console.log("environment",environment)
   // validamos si los archivos existen
   if (fs.existsSync(crPath) && fs.existsSync(pkPath)) {
     // cargamos los archivos sobre las options
