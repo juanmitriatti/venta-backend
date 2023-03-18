@@ -26,11 +26,6 @@ export class FacturaController {
     return this.facturaService.findAll();
   }
 
-  /*@Get('lineas')
-  findAllFacturasLineas(): Promise<FacturaEntity[]> {
-    return this.facturaService.findAllFacturasLineas();
-  }*/
-
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.facturaService.findOne(+id);

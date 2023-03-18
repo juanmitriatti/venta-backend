@@ -1,10 +1,9 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException, BadRequestException, InternalServerErrorException, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { createProductoDto } from './dto/create-producto.dto';
 import { UpdateProductoDto } from './dto/update-producto.dto';
 import { ProductoRepository } from './producto.repository';
 import { ProductoEntity } from './entities/producto.entity';
-import { InternalServerErrorException, Logger } from '@nestjs/common';
 
 @Injectable()
 export class ProductoService {
@@ -51,17 +50,30 @@ export class ProductoService {
     }
   }
 
-  async remove(id: number) {
-    const producto = await this._productoRepository.findOne(id, {
+  async remove(id: number): Promise<void> {
+    let producto = await this._productoRepository.findOne(id, {
       where: { Status: 'ACTIVE' },
     });
 
+    if (!producto) {
+      this.logger.error(
+        `Producto con id  "${id}" ya estaba eliminado..`,
+      );
+      throw new BadRequestException(
+        `Producto con id  "${id}"  ya estaba eliminado.`,
+      );
+    }
+
+    producto.Status = 'DELETED';
+
     try {
-      this.logger.log(`Producto with id "${id}" has been deleted.`);
-      return await this._productoRepository.remove(producto);
+      this.logger.log(
+        `Producto con JDEEventID "${id}" se ha removido.`,
+      );
+      await this._productoRepository.save(producto);
     } catch (error) {
       this.logger.error(
-        `Failed to delete an product for id "${id}"`,
+        `Fallo al eliminar producton con ID "${id}"`,
         error.stack,
       );
       throw new InternalServerErrorException();

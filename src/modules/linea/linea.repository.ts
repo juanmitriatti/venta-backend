@@ -13,11 +13,7 @@ export class LineaRepository extends Repository<LineaEntity> {
 
     createLineaDto.factura = facturaEntidad;
     let linea = [];
-    //console.log("Repository : llega este DTO", createLineaDto)
     if (createLineaDto.productoLinea) {
-      //console.log("Repository : createLineaDto.productoLinea", createLineaDto.productoLinea)
-      //console.log(typeof createLineaDto.productoLinea);
-
       createLineaDto.productoLinea.forEach(async (arrayItem) => {
 
         const linea = this.create({
@@ -28,7 +24,7 @@ export class LineaRepository extends Repository<LineaEntity> {
 
         try {
           await this.save(linea);
-          Logger.log(`Linea  has been created.`);
+          Logger.log(`Linea  ha sido creada.`);
           return linea;
         } catch (error) {
           console.log(error);
