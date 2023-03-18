@@ -51,7 +51,20 @@ export class ProductoService {
     }
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} producto`;
+  async remove(id: number) {
+    const producto = await this._productoRepository.findOne(id, {
+      where: { Status: 'ACTIVE' },
+    });
+
+    try {
+      this.logger.log(`Producto with id "${id}" has been deleted.`);
+      return await this._productoRepository.remove(producto);
+    } catch (error) {
+      this.logger.error(
+        `Failed to delete an product for id "${id}"`,
+        error.stack,
+      );
+      throw new InternalServerErrorException();
+    }
   }
 }
